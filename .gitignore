@@ -1,0 +1,22 @@
+# Entornos virtuales y caché
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Datos (NUNCA subir datos clínicos)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Resultados y bases de datos locales
+outputs/
+*.db
+*.sqlite3
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db

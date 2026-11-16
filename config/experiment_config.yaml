@@ -1,0 +1,171 @@
+# config/experiment_config.yaml
+project_name: "baseline_dmg_doctorado"
+
+paths:
+  raw_data: "data/raw/dataset_dmg_con_fecha.csv"
+  processed_dir: "data/processed"
+  outputs_dir: "outputs"
+  optuna_db: "sqlite:///outputs/optuna_db/studies.db"
+
+schema:
+  pregnancy_id: "id_embarazo"
+  patient_id: "id_paciente"
+  target_col: "DMG"
+  date_col: "fecha_1T"
+
+# Definición exacta de variables según el perfilado de la base (45 + fecha_1T)
+columns:
+  obstetric_zero_impute:
+    - "PARTOS"
+    - "CESAREAS"
+    - "ABORTOS"
+  obstetric_one_impute:
+    - "GRAVIDA"
+  
+  high_null_drop_in_logreg:
+    - "IMC"
+    - "TALLA"
+
+  # Escalera de Ablación
+  feature_sets:
+    set_1_clinico:
+      - "DIAS_1T"
+      - "EDAD"
+      - "PESO"
+      - "TALLA"
+      - "IMC"
+      - "GRAVIDA"
+      - "PARTOS"
+      - "CESAREAS"
+      - "ABORTOS"
+      - "ANTC_DMG"
+      - "OBST_IMPUTED_FLAG"
+      - "PRIMIGESTA_FLAG"
+
+    set_2a_lab_sin_glu:
+      - "DIAS_1T"
+      - "EOSI_HEMO"
+      - "HCM_HEMO"
+      - "HEMG_HEMO"
+      - "HEMT_HEMO"
+      - "HTO_HEMO"
+      - "LEUC_HEMO"
+      - "LINF_HEMO"
+      - "MCHM_HEMO"
+      - "MONO_HEMO"
+      - "NEUS_HEMO"
+      - "PLAQ_HEMO"
+      - "T4L1_TIR2"
+      - "TSH1_TIR2"
+      - "VCM_HEMO"
+      - "NLR"
+      - "PLR"
+      - "LMR"
+      - "MLR"
+      - "SII"
+      - "SIRI"
+      - "PIV"
+      - "ELR"
+      - "NMR"
+      - "dNLR"
+      - "TFQI"
+      - "JTI"
+      - "TTSI"
+      - "SPINA_GT"
+      - "MENTZER"
+      - "SHINE_LAL"
+
+    set_2b_lab_completo:
+      - "DIAS_1T"
+      - "EOSI_HEMO"
+      - "HCM_HEMO"
+      - "HEMG_HEMO"
+      - "HEMT_HEMO"
+      - "HTO_HEMO"
+      - "LEUC_HEMO"
+      - "LINF_HEMO"
+      - "MCHM_HEMO"
+      - "MONO_HEMO"
+      - "NEUS_HEMO"
+      - "PLAQ_HEMO"
+      - "T4L1_TIR2"
+      - "TSH1_TIR2"
+      - "VCM_HEMO"
+      - "NLR"
+      - "PLR"
+      - "LMR"
+      - "MLR"
+      - "SII"
+      - "SIRI"
+      - "PIV"
+      - "ELR"
+      - "NMR"
+      - "dNLR"
+      - "TFQI"
+      - "JTI"
+      - "TTSI"
+      - "SPINA_GT"
+      - "MENTZER"
+      - "SHINE_LAL"
+      - "GLUS_QUI1"
+      - "COV_CHCM_GLU"
+
+    set_3_full:
+      - "DIAS_1T"
+      - "EDAD"
+      - "PESO"
+      - "TALLA"
+      - "IMC"
+      - "GRAVIDA"
+      - "PARTOS"
+      - "CESAREAS"
+      - "ABORTOS"
+      - "ANTC_DMG"
+      - "OBST_IMPUTED_FLAG"
+      - "PRIMIGESTA_FLAG"
+      - "EOSI_HEMO"
+      - "HCM_HEMO"
+      - "HEMG_HEMO"
+      - "HEMT_HEMO"
+      - "HTO_HEMO"
+      - "LEUC_HEMO"
+      - "LINF_HEMO"
+      - "MCHM_HEMO"
+      - "MONO_HEMO"
+      - "NEUS_HEMO"
+      - "PLAQ_HEMO"
+      - "T4L1_TIR2"
+      - "TSH1_TIR2"
+      - "VCM_HEMO"
+      - "NLR"
+      - "PLR"
+      - "LMR"
+      - "MLR"
+      - "SII"
+      - "SIRI"
+      - "PIV"
+      - "ELR"
+      - "NMR"
+      - "dNLR"
+      - "TFQI"
+      - "JTI"
+      - "TTSI"
+      - "SPINA_GT"
+      - "MENTZER"
+      - "SHINE_LAL"
+      - "GLUS_QUI1"
+      - "COV_CHCM_GLU"
+
+validation:
+  cv_n_splits: 5
+  cv_n_repeats: 5
+  cv_base_seed: 1000
+  temporal_train_quantile: 0.80
+  temporal_n_seeds: 10
+  temporal_base_seed: 2000
+  inner_cv_splits: 3
+
+optimization:
+  n_trials: 100
+  n_jobs_per_model: 18        # Ajustar a 12 o 16 según los cores de la PC
+  boundary_tolerance: 0.05    # 5% del rango inferior o superior activa el flag de borde
